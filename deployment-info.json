@@ -1,0 +1,27 @@
+{
+  "network": "sepolia",
+  "token": {
+    "name": "NaijaLoyal",
+    "symbol": "NLG",
+    "address": "0x66ddb7BAF31E90d7d925C78d02Efe28195d4B84a",
+    "totalSupply": "1000000"
+  },
+  "ido": {
+    "address": "0xDDaf1B239941Af55799AC42f90e53bf213075c43",
+    "tokenPrice": "0.000066",
+    "tokensAvailable": "100000",
+    "fundraisingTarget": "6.6"
+  },
+  "wallets": {
+    "founders": "0xce3d96d6F4C50432147c0234aF0e25334b2b5B4f",
+    "advisors": "0xce3d96d6F4C50432147c0234aF0e25334b2b5B4f",
+    "community": "0xce3d96d6F4C50432147c0234aF0e25334b2b5B4f",
+    "treasury": "0xce3d96d6F4C50432147c0234aF0e25334b2b5B4f",
+    "private": "0xce3d96d6F4C50432147c0234aF0e25334b2b5B4f"
+  },
+  "deployment": {
+    "deployer": "0xce3d96d6F4C50432147c0234aF0e25334b2b5B4f",
+    "timestamp": "2025-09-13T02:19:23.544Z",
+    "blockNumber": 9192196
+  }
+}

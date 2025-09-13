@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NaijaLoyal Token IDO - Community Loyalty Token on Ethereum Sepolia Testnet">
+    <meta name="keywords" content="NaijaLoyal, Token, IDO, Ethereum, Sepolia, DeFi, Blockchain">
+    <meta name="author" content="NaijaLoyal Team">
+    <meta property="og:title" content="NaijaLoyal Token IDO">
+    <meta property="og:description" content="Community Loyalty Token - IDO on Sepolia Testnet">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourusername.github.io/naijaloyal-ido-frontend">
+    <title>NaijaLoyal Token IDO</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.1/ethers.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .card h2 {
+            margin-bottom: 20px;
+            color: #4a5568;
+            text-align: center;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .stat-label {
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            color: #2d3748;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            transition: width 0.3s ease;
+        }
+        
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .button-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .button-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .button-secondary {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .button-secondary:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+        }
+        
+        .button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .wallet-info {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #48bb78;
+        }
+        
+        .status-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .status-success {
+            background: #c6f6d5;
+            color: #2f855a;
+            border: 1px solid #68d391;
+        }
+        
+        .status-error {
+            background: #fed7d7;
+            color: #c53030;
+            border: 1px solid #fc8181;
+        }
+        
+        .status-info {
+            background: #bee3f8;
+            color: #2c5282;
+            border: 1px solid #63b3ed;
+        }
+        
+        .loading {
+            opacity: 0.7;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .tokenomics {
+            margin-top: 30px;
+        }
+        
+        .tokenomics-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">🏆 NaijaLoyal</h1>
+            <p class="subtitle">Community Loyalty Token - IDO on Sepolia Testnet</p>
+        </header>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>📊 Token Sale Information</h2>
+                <div class="stat-item">
+                    <span class="stat-label">Token Price</span>
+                    <span class="stat-value" id="tokenPrice">Loading...</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Tokens Available</span>
+                    <span class="stat-value" id="tokensAvailable">Loading...</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Tokens Sold</span>
+                    <span class="stat-value" id="tokensSold">Loading...</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Total Raised</span>
+                    <span class="stat-value" id="totalRaised">Loading...</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Sale Status</span>
+                    <span class="stat-value" id="saleStatus">Loading...</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                </div>
+
+                <div class="tokenomics">
+                    <h3 style="margin-bottom: 15px; color: #4a5568;">Token Distribution</h3>
+                    <div class="tokenomics-item">
+                        <span>Founders & Team</span>
+                        <span>15%</span>
+                    </div>
+                    <div class="tokenomics-item">
+                        <span>Advisors</span>
+                        <span>5%</span>
+                    </div>
+                    <div class="tokenomics-item">
+                        <span>Community Rewards</span>
+                        <span>30%</span>
+                    </div>
+                    <div class="tokenomics-item">
+                        <span>Treasury</span>
+                        <span>25%</span>
+                    </div>
+                    <div class="tokenomics-item">
+                        <span>IDO Sale</span>
+                        <span>10%</span>
+                    </div>
+                    <div class="tokenomics-item">
+                        <span>Private Sale</span>
+                        <span>10%</span>
+                    </div>
+                    <div class="tokenomics-item">
+                        <span>Reserve</span>
+                        <span>5%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>💰 Buy NaijaLoyal Tokens</h2>
+                <div id="statusMessage" class="status-message hidden"></div>
+                
+                <div id="walletSection">
+                    <button id="connectWallet" class="button button-primary">
+                        🔗 Connect MetaMask Wallet
+                    </button>
+                    <div id="walletInfo" class="wallet-info hidden">
+                        <div><strong>Connected:</strong> <span id="walletAddress"></span></div>
+                        <div><strong>Balance:</strong> <span id="ethBalance"></span> ETH</div>
+                        <div><strong>Your NLG:</strong> <span id="nlgBalance"></span> NLG</div>
+                    </div>
+                </div>
+
+                <div id="purchaseSection" class="hidden">
+                    <div class="input-group">
+                        <label class="input-label" for="ethAmount">Amount to Spend (ETH)</label>
+                        <input type="number" id="ethAmount" class="input-field" placeholder="0.1" step="0.001" min="0">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label" for="tokenAmount">Tokens to Receive (NLG)</label>
+                        <input type="text" id="tokenAmount" class="input-field" placeholder="0" readonly>
+                    </div>
+
+                    <button id="buyTokens" class="button button-secondary">
+                        🛒 Buy Tokens
+                    </button>
+                    
+                    <div class="stat-item">
+                        <span class="stat-label">Minimum Purchase</span>
+                        <span class="stat-value" id="minPurchase">Loading...</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Maximum Purchase</span>
+                        <span class="stat-value" id="maxPurchase">Loading...</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Your Purchases</span>
+                        <span class="stat-value" id="yourPurchases">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer style="text-align: center; margin-top: 40px; color: rgba(255, 255, 255, 0.8);">
+            <p>Made with ❤️ for the NaijaLoyal Community</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
