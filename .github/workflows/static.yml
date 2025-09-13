@@ -3,7 +3,6 @@ name: Deploy Frontend to GitHub Pages
 on:
   push:
     branches: [ main ]
-    paths: [ 'frontend/**' ]  # Only deploy on frontend changes
   workflow_dispatch:
 
 permissions:
@@ -28,24 +27,19 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       
-      - name: Validate frontend files
+      - name: Prepare deployment directory
         run: |
-          echo "Checking if required files exist..."
-          ls -la frontend/
-          test -f frontend/index.html || (echo "index.html missing!" && exit 1)
-          test -f frontend/app.js || (echo "app.js missing!" && exit 1)
-          echo "✅ All required files found"
+          mkdir -p _site
+          cp frontend/index.html _site/
+          cp frontend/app.js _site/
+          echo "✅ Files copied to deployment directory"
+          ls -la _site/
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './frontend'
+          path: '_site'
       
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        
-      - name: Summary
-        run: |
-          echo "🚀 Deployment completed successfully!"
-          echo "📱 Your DApp is now live at: ${{ steps.deployment.outputs.page_url }}"
