@@ -1,5 +1,4 @@
 // frontend/app.js
-// Remove the import line - ethers is loaded via CDN in HTML
 
 const tokenABI = [
   "function balanceOf(address) view returns (uint256)",
@@ -27,8 +26,8 @@ const idoABI = [
 ];
 
 // Update with your actual deployed addresses
-const tokenAddress = "0x2954040d22aeD0828ca1b323d7C11b10f0304D47";
-const idoAddress = "0x57ba14Bb8Fcf78F6672AAff42EC20FAf88243f3C";
+const tokenAddress = "0x66ddb7BAF31E90d7d925C78d02Efe28195d4B84a";
+const idoAddress = "0xDDaf1B239941Af55799AC42f90e53bf213075c43";
 
 let provider, signer, tokenContract, idoContract;
 let userAccount = null;
